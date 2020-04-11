@@ -110,7 +110,7 @@ $(document).on('click', '.edit', function(e) {
 function showItems() {
     $("#items").empty();
     if ($("#groups").val() !== "") {
-        $("#items").append("<h1>Items</h1><br><button type='button' id='addItem' onclick='addItem();'>Add Item</button><br>");
+        $("#items").append("<h3 style='display: inline-block'>Items</h3><button type='button' id='addItem' onclick='addItem();'>Add Item</button><br>");
         var i;
         for (i = 0; i < globalGroups.length; i++) {
             if (globalGroups[i].groupName === $("#groups").val()) {
