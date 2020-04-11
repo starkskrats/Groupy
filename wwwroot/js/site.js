@@ -115,7 +115,7 @@ $(document).on('click', '.edit', function(e) {
 function showItems() {
     $("#items").empty();
     if ($("#groups").val() !== "") {
-        $("#items").append("<h3 style='display: inline-block'>Items</h3><button type='button' id='addItem' class='btn btn-primary' onclick='addItem();'>Add Item</button><br><br>");
+        $("#items").append("<button type='button' id='addItem' class='btn btn-primary' onclick='addItem();'>Add Item</button><br><br>");
         var i;
         for (i = 0; i < globalGroups.length; i++) {
             if (globalGroups[i].groupName === $("#groups").val()) {
@@ -127,21 +127,21 @@ function showItems() {
         for (var j = 0; j < globalGroups[i].Items.length; j++) {
             append += "<div class='card' style='width: 18rem; margin: 20px;'>";
             append += "<div class='item card-body' data-group='" + globalGroups[i].groupName + "' data-item='" + globalGroups[i].Items[j].title + "'><h5 class='card-title'>" + globalGroups[i].Items[j].title + "</h5>";
-            if (globalGroups[i].Items[j].isVisible || globalGroups[i].Items[j].creator === username) {
+            if (globalGroups[i].Items[j].isVisible) {
                 append += "<p class='card-text'>" + globalGroups[i].Items[j].body + "</p>";
+                if (globalGroups[i].Items[j].canEdit) {
+                    append += "<a href='#' class='edit card-link'>Edit</a>";
+                }
             }
 
-            if ((globalGroups[i].Items[j].isVisible || globalGroups[i].Items[j].creator === username) && globalGroups[i].Items[j].canEdit) {
-                append += "<a href='#' class='edit card-link'>Edit</a>";
-                if (globalGroups[i].Items[j].creator === username) {
-                    append += "<a href='#' class='visible card-link' data-visible='";
-                    if (globalGroups[i].Items[j].isVisible) {
-                        append += "true'>Hide";
-                    } else {
-                        append += "false'>Show";
-                    }
-                    append += "</a>";
+            if (globalGroups[i].Items[j].creator === username && globalGroups[i].Items[j].canEdit) {
+                append += "<a href='#' class='visible card-link' data-visible='";
+                if (globalGroups[i].Items[j].isVisible) {
+                    append += "true'>Hide";
+                } else {
+                    append += "false'>Show";
                 }
+                append += "</a>";
             }
             append += "</div></div>";
         }
