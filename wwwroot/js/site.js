@@ -76,7 +76,12 @@ $(document).on('click', '.visible', function(e) {
     e.preventDefault();
     var groupName = $(this).parent().attr('data-group');
     var itemName = $(this).parent().attr('data-item');
-    var isVisible = $(this).is(':checked');
+    var isVisible;
+    if ($(this).attr('data-visible') === "true") {
+        isVisible = false;
+    } else {
+        isVisible = true;
+    }
     switchVisibility(groupName, itemName, isVisible);
 });
 
@@ -110,33 +115,37 @@ $(document).on('click', '.edit', function(e) {
 function showItems() {
     $("#items").empty();
     if ($("#groups").val() !== "") {
-        $("#items").append("<h3 style='display: inline-block'>Items</h3><button type='button' id='addItem' onclick='addItem();'>Add Item</button><br>");
+        $("#items").append("<h3 style='display: inline-block'>Items</h3><button type='button' id='addItem' class='btn btn-primary' onclick='addItem();'>Add Item</button><br><br>");
         var i;
         for (i = 0; i < globalGroups.length; i++) {
             if (globalGroups[i].groupName === $("#groups").val()) {
                 break;
             }
         }
-        
+        var append = "";
+        append += "<div class='row'>";
         for (var j = 0; j < globalGroups[i].Items.length; j++) {
-            var append = "";
-            append += "<div class='item' data-group='" + globalGroups[i].groupName + "' data-item='" + globalGroups[i].Items[j].title + "'><h3>" + globalGroups[i].Items[j].title + "</h3>";
+            append += "<div class='card' style='width: 18rem; margin: 20px;'>";
+            append += "<div class='item card-body' data-group='" + globalGroups[i].groupName + "' data-item='" + globalGroups[i].Items[j].title + "'><h5 class='card-title'>" + globalGroups[i].Items[j].title + "</h5>";
             if (globalGroups[i].Items[j].isVisible || globalGroups[i].Items[j].creator === username) {
-                append += "<p>" + globalGroups[i].Items[j].body + "</p>";
+                append += "<p class='card-text'>" + globalGroups[i].Items[j].body + "</p>";
             }
 
             if ((globalGroups[i].Items[j].isVisible || globalGroups[i].Items[j].creator === username) && globalGroups[i].Items[j].canEdit) {
-                append += "<button class='edit' type='button'>Edit</button>";
+                append += "<a href='#' class='edit card-link'>Edit</a>";
                 if (globalGroups[i].Items[j].creator === username) {
-                    append += "<label>Visible</label><input class='visible' type='checkbox' ";
+                    append += "<a href='#' class='visible card-link' data-visible='";
                     if (globalGroups[i].Items[j].isVisible) {
-                        append += "checked";
+                        append += "true'>Hide";
+                    } else {
+                        append += "false'>Show";
                     }
-                    append += ">";
+                    append += "</a>";
                 }
             }
-            append += "</div><br>";
-            $("#items").append(append);
+            append += "</div></div>";
         }
+        append += "</div>";
+        $("#items").append(append);
     }
 }

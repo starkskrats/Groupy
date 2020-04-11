@@ -7,26 +7,28 @@
     <meta name="author" content="">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        .item {
-            border: 1px solid black;
-            text-align: center;
-            width: 300px;
-        }
-    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 
 <body>
-    <div id="login">
-        <input type="text" id="username">
-        <button id="loginButton" type="button">Login</button>
-    </div>
-    <div id="main" style="display: none;">
-        <select id="groups">
-            <option id="default" value="">Select a group</option>
-        </select>
-        <button id="addGroup" type="button">Add Group</button><br>
-        <div id="items"></div>
+    <div class="container">
+        <h1>Groupy</h1>
+        <div id="login" class="form-inline">
+            <input type="text" id="username" class="form-control">
+            <button id="loginButton" type="button" class="btn btn-primary">Login</button>
+        </div>
+        <div id="main" style="display: none;">
+            <div class="form-inline">
+                <select class="form-control" id="groups">
+                    <option id="default" value="">Select a group</option>
+                </select>
+                <button id="addGroup" type="button" class="btn btn-primary">Add Group</button><br>
+            </div>
+            <br>
+            <div id="items">
+                
+            </div>
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aspnet-signalr/1.1.4/signalr.js" integrity="sha256-+82uy4inf/iMVOSgp7oOVfQrgRK9rUlMnW7gwD8mgOw=" crossorigin="anonymous"></script>
