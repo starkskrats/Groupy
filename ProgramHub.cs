@@ -21,32 +21,32 @@ namespace Groupy
         
         public async Task AddGroup(string groupName)
         {
-            Group.addGroup(new Group(groupName));
+            Group.addGroup(groupName);
             await Clients.All.SendAsync("PopulateGroups", Group.groups);
             await SendGroups();
         }
         
-        public async Task AddItem(string groupName, string itemName, string itemBody)
+        public async Task AddItem(string groupID, string itemName, string itemBody)
         {
-            Group.groups.Find(group => group.Name == groupName).addItem(new Items(Context.Items["username"].ToString(), itemName, itemBody));
+            Group.groups.Find(group => group.ID == Int32.Parse(groupID)).addItem(Context.Items["username"].ToString(), itemName, itemBody);
             await SendGroups();
         }
         
-        public async Task UpdateItem(string groupName, string itemName, string itemBody)
+        public async Task UpdateItem(string groupID, string itemID, string itemBody)
         {
-            Group.groups.Find(group => group.Name == groupName).GetItems.Find(item => item.Title == itemName).UpdateItem(itemBody);
+            Group.groups.Find(group => group.ID == Int32.Parse(groupID)).GetItems.Find(item => item.ID == Int32.Parse(itemID)).UpdateItem(itemBody);
             await SendGroups();
         }
         
-        public async Task SwitchVisibility(string groupName, string itemName, bool visibility)
+        public async Task SwitchVisibility(string groupID, string itemID, bool visibility)
         {
-            Group.groups.Find(group => group.Name == groupName).GetItems.Find(item => item.Title == itemName).SwitchVisibility(visibility);
+            Group.groups.Find(group => group.ID == Int32.Parse(groupID)).GetItems.Find(item => item.ID == Int32.Parse(itemID)).SwitchVisibility(visibility);
             await SendGroups();
         }
         
-        public async Task SwitchEditable(string groupName, string itemName, bool editable)
+        public async Task SwitchEditable(string groupID, string itemID, bool editable)
         {
-            Group.groups.Find(group => group.Name == groupName).GetItems.Find(item => item.Title == itemName).SwitchEditable(editable);
+            Group.groups.Find(group => group.ID == Int32.Parse(groupID)).GetItems.Find(item => item.ID == Int32.Parse(itemID)).SwitchEditable(editable);
             await SendGroups();
         }
     }

@@ -8,20 +8,28 @@ namespace Groupy
 {
     public class Items
     {
-
+        private int id;
         private string creator;
         private string title;
         private string textBody;
         private bool isVisible;
         private bool canEdit;
 
-        public Items(string creator, string title, string textBody)
+        public Items(int id, string creator, string title, string textBody)
         {
+            this.id = id;
             this.creator = creator;
             this.title = title;
             this.textBody = textBody;
             isVisible = false;
             canEdit = true;
+        }
+        
+        [JsonPropertyName("ID")]
+        public int ID
+        {
+            get { return id; }
+            set { id = value; }
         }
         
         [JsonPropertyName("creator")]

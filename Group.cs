@@ -8,13 +8,24 @@ namespace Groupy
         public static List<Group> groups = new List<Group>();
         
         private string name;
+        private int id;
+        private int itemID = 0;
+        private static int groupID = 0;
         
         private List<Items> groupItems;
 
         public Group(string name)
         {
+            this.id = ++groupID;
             this.name = name;
             groupItems = new List<Items>();
+        }
+        
+        [JsonPropertyName("ID")]
+        public int ID
+        {
+            get { return id; }
+            set { id = value; }
         }
         
         [JsonPropertyName("groupName")]
@@ -35,14 +46,14 @@ namespace Groupy
         /// Add a new item to the group.
         /// </summary>
         /// <param name="item"></param>
-        public void addItem(Items item)
+        public void addItem(string username, string itemName, string itemBody)
         {
-            groupItems.Add(item);
+            groupItems.Add(new Items(++itemID, username, itemName, itemBody));
         }
 
-        public static void addGroup(Group group)
+        public static void addGroup(string groupName)
         {
-            groups.Add(group);
+           Group.groups.Add(new Group(groupName));
         }
     }
 }
