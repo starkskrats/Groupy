@@ -5,7 +5,6 @@ connection.start();
 var globalGroups = [];
 var username = "";
 connection.on("ReceiveData", (groups) => {
-    console.log(groups);
     globalGroups = groups;
     showItems();
 });
@@ -13,7 +12,7 @@ connection.on("ReceiveData", (groups) => {
 connection.on("PopulateGroups", (groups) => {
     $("#groups").find('option').not(':first').remove();
     for (var i = 0; i < groups.length; i++) {
-        $("#groups").append("<option value='" + groups[i].groupName + "'>" + groups[i].groupName + "</option>")
+        $("#groups").append("<option value='" + escape(groups[i].groupName) + "'>" + groups[i].groupName + "</option>")
     }
 });
 
@@ -51,7 +50,7 @@ function addItem() {
     }
 
     if (itemName !== null && itemBody !== null) {
-        connection.invoke("AddItem", $("#groups").val(), itemName, itemBody).catch(err => console.error(err.toString()));
+        connection.invoke("AddItem", unescape($("#groups").val()), itemName, itemBody).catch(err => console.error(err.toString()));
     }
 }
 
@@ -74,8 +73,8 @@ function switchEditable(groupName, itemName, editable) {
 
 $(document).on('click', '.visible', function(e) {
     e.preventDefault();
-    var groupName = $(this).parent().attr('data-group');
-    var itemName = $(this).parent().attr('data-item');
+    var groupName = unescape($(this).parent().attr('data-group'));
+    var itemName = unescape($(this).parent().attr('data-item'));
     var isVisible;
     if ($(this).attr('data-visible') === "true") {
         isVisible = false;
@@ -87,8 +86,8 @@ $(document).on('click', '.visible', function(e) {
 
 $(document).on('click', '.edit', function(e) {
     e.preventDefault();
-    var groupName = $(this).parent().attr('data-group');
-    var itemName = $(this).parent().attr('data-item');
+    var groupName = unescape($(this).parent().attr('data-group'));
+    var itemName = unescape($(this).parent().attr('data-item'));
     switchEditable(groupName, itemName, false);
     var i;
     for (i = 0; i < globalGroups.length; i++) {
@@ -118,7 +117,7 @@ function showItems() {
         $("#items").append("<button type='button' id='addItem' class='btn btn-primary' onclick='addItem();'>Add Item</button><br><br>");
         var i;
         for (i = 0; i < globalGroups.length; i++) {
-            if (globalGroups[i].groupName === $("#groups").val()) {
+            if (globalGroups[i].groupName === unescape($("#groups").val())) {
                 break;
             }
         }
@@ -126,7 +125,7 @@ function showItems() {
         append += "<div class='row'>";
         for (var j = 0; j < globalGroups[i].Items.length; j++) {
             append += "<div class='card' style='width: 18rem; margin: 20px;'>";
-            append += "<div class='item card-body' data-group='" + globalGroups[i].groupName + "' data-item='" + globalGroups[i].Items[j].title + "'><h5 class='card-title'>" + globalGroups[i].Items[j].title + "</h5>";
+            append += "<div class='item card-body' data-group='" + escape(globalGroups[i].groupName) + "' data-item='" + escape(globalGroups[i].Items[j].title) + "'><h5 class='card-title'>" + globalGroups[i].Items[j].title + "</h5>";
             if (globalGroups[i].Items[j].isVisible) {
                 append += "<p class='card-text'>" + globalGroups[i].Items[j].body + "</p>";
                 if (globalGroups[i].Items[j].canEdit) {
